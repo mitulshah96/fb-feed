@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
 
-declare var window:any;
+declare var window: any;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
+
 })
 export class AppComponent implements OnInit {
   title = 'Facebook feeds';
@@ -76,53 +77,54 @@ export class AppComponent implements OnInit {
       "link": "https://www.facebook.com/wvamwater/"
     }
   ]
-  APP_ID: string = ''
+  APP_ID: string = '';
+  parser: HTMLElement;
   modelFaceTwit: any = {
     facebook: {
-      fbLinkSelected: 'https://www.facebook.com/weareamericanwater/'
+      fbLinkSelected: this.fbwidgetLinks[0].link
     }
   }
 
-
   ngOnInit() {
-    this.loadFb();
+    this.loadWidget();
   }
 
   onChange(event: any) {
-    this.modelFaceTwit.facebook.fbLinkSelected = event.target.value
-    this.initFbWIdget(this.modelFaceTwit.facebook.fbLinkSelected);
+    this.modelFaceTwit.facebook.fbLinkSelected = event.target.value;
+    //this.initFbWIdget(this.modelFaceTwit.facebook.fbLinkSelected);
+    this.loadFb()
+  }
+
+  loadWidget() {
+    var js, fjs = document.getElementsByTagName('script')[0];
+    if (document.getElementById("facebook-jssdk")) return;
+    js = document.createElement('script');
+    js.id = "facebook-jssdk";
+    js.src = "https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.0&appId=1783474715284560"
+    fjs.parentNode.insertBefore(js, fjs);
   }
 
   loadFb() {
-    console.log('I am called')
-    this.APP_ID = '1783474715284560';
-    (function (d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=1783474715284560"
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'))
-  }
-
-  initFbWIdget(url){
-    console.log(url)
-    document.getElementById('fbWidget').innerHTML='';
-    var parser=document.getElementById('fbWidget');
-    parser.innerHTML=`<div id="fb-root"></div>
-    <div class="fb-page" id="fb-page" data-href="`+ url + `" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true"
-        data-hide-cover="false" data-show-facepile="true">
-        <div class="fb-xfbml-parse-ignore">
-            <blockquote cite="https://www.facebook.com/facebook">
-                <a href="https://www.facebook.com/facebook">Facebook</a>
-            </blockquote>
-        </div>
-    </div>`;
-    
+    console.log("loading ...")
+    const widget = document.getElementById("fbWidget");
+    const parent = widget.parentNode;
+    widget.parentNode.removeChild(widget);
+    var div = document.createElement("div");
+    div.id = "fbWidget";
+    document.body.appendChild(div);
+    this.parser = document.getElementById('fbWidget');
+    this.parser.innerHTML = `<div id="fb-root"></div>
+       <div class="fb-page" id="fb-page" data-href="`+ this.modelFaceTwit.facebook.fbLinkSelected + `" data-tabs="timeline"
+       data-width="800" d data-adapt-container-width="true"  data-height="500" ata-small-header="false"
+       data-hide-cover="false" data-show-facepile="true"><blockquote cite="`+ this.modelFaceTwit.facebook.fbLinkSelected + `" class="fb-xfbml-parse-ignore">
+                   <a href="`+ this.modelFaceTwit.facebook.fbLinkSelected + `">American Water</a>
+               </blockquote></div>`;
 
     if(window.FB){
-        window.FB.XFBML.parse(parser);
+      window.FB.XFBML.parse(this.parser);
     }
-    this.loadFb()
+
+    this.loadWidget()
   }
+
 }

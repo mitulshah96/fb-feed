@@ -5,18 +5,18 @@
   </h1>
 
 </div>
-<select (change)="onChange($event)">
-  <option *ngFor="let option of fbwidgetLinks" [value]="option.link" [hidden]="!option.link">{{option.name}}</option>
+<select [(ngModel)]="modelFaceTwit.facebook.fbLinkSelected" (change)="onChange($event)">
+  <option *ngFor="let options of fbwidgetLinks; let i=index;" [value]="options.link" [hidden]="!options.link">{{options.name}}</option>
 </select>
 
 <h1>
   Selected value is {{modelFaceTwit.facebook.fbLinkSelected}}
 </h1>
 
-<div class="fbWidget">
+<div id="fbWidget">
   <div id="fb-root"></div>
-  <div class="fb-page" [attr.data-href]="modelFaceTwit.facebook.fbLinkSelected" data-tabs="timeline" data-width="500" data-adapt-container-width="true"
-    data-height="270" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
+  <div class="fb-page" [attr.data-href]="modelFaceTwit.facebook.fbLinkSelected" data-tabs="timeline" data-width="800" data-adapt-container-width="true"
+    data-height="500" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
     <div class="fb-xfbml-parse-ignore">
     <blockquote [attr.cite]="modelFaceTwit.facebook.fbLinkSelected">
       <a [attr.href]="modelFaceTwit.facebook.fbLinkSelected">American Water</a>
