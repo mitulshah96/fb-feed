@@ -13,7 +13,12 @@
   Selected value is {{modelFaceTwit.facebook.fbLinkSelected}}
 </h1>
 
-<div id="fbWidget">
+
+<fb-page href={{modelFaceTwit.facebook.fbLinkSelected}} width="500px" height="500px" tabs="timeline" hideCover="false" showFacepile="false" smallHeader="false" adaptContainerWidth="true"></fb-page>
+
+
+
+<!-- <div id="fbWidget">
   <div id="fb-root"></div>
   <div class="fb-page" [attr.data-href]="modelFaceTwit.facebook.fbLinkSelected" data-tabs="timeline" data-width="800" data-adapt-container-width="true"
     data-height="500" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
@@ -23,4 +28,4 @@
     </blockquote>
     </div>
   </div>
-</div>
+</div> -->

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { FacebookService, InitParams } from 'ngx-facebook';
 
 declare var window: any;
 @Component({
@@ -14,11 +14,11 @@ export class AppComponent implements OnInit {
   fbwidgetLinks: Array<any> = [
     {
       "name": "CORP",
-      "link": "https://www.facebook.com/weareamericanwater/"
+      "link": "https://www.facebook.com/weareamericanwater"
     },
     {
       "name": "California",
-      "link": "https://www.facebook.com/caamwater/"
+      "link": "https://www.facebook.com/caamwater"
     },
     {
       "name": "Hawaii",
@@ -26,23 +26,23 @@ export class AppComponent implements OnInit {
     },
     {
       "name": "Iowa",
-      "link": "https://www.facebook.com/iowaamwater/"
+      "link": "https://www.facebook.com/iowaamwater"
     },
     {
       "name": "Illinois",
-      "link": "https://www.facebook.com/ilamwater/"
+      "link": "https://www.facebook.com/ilamwater"
     },
     {
       "name": "Indiana",
-      "link": "https://www.facebook.com/IndianaAmericanWater/"
+      "link": "https://www.facebook.com/IndianaAmericanWater"
     },
     {
       "name": "Kentucky",
-      "link": "https://www.facebook.com/KentuckyAmericanWater/"
+      "link": "https://www.facebook.com/KentuckyAmericanWater"
     },
     {
       "name": "Maryland",
-      "link": "https://www.facebook.com/MarylandAmericanWater/"
+      "link": "https://www.facebook.com/MarylandAmericanWater"
     },
     {
       "name": "Michigan",
@@ -50,7 +50,7 @@ export class AppComponent implements OnInit {
     },
     {
       "name": "Missouri",
-      "link": "https://www.facebook.com/missouriaw/"
+      "link": "https://www.facebook.com/missouriaw"
     },
     {
       "name": "New Jersey",
@@ -58,23 +58,23 @@ export class AppComponent implements OnInit {
     },
     {
       "name": "New York",
-      "link": "https://www.facebook.com/nyamwater/"
+      "link": "https://www.facebook.com/nyamwater"
     },
     {
       "name": "Pennsylvania",
-      "link": "https://www.facebook.com/pennsylvaniaamwater/"
+      "link": "https://www.facebook.com/pennsylvaniaamwater"
     },
     {
       "name": "Tennessee",
-      "link": "https://www.facebook.com/tnamwater/"
+      "link": "https://www.facebook.com/tnamwater"
     },
     {
       "name": "Virginia",
-      "link": "https://www.facebook.com/VirginiaAmericanWater/"
+      "link": "https://www.facebook.com/VirginiaAmericanWater"
     },
     {
       "name": "West Virginia",
-      "link": "https://www.facebook.com/wvamwater/"
+      "link": "https://www.facebook.com/wvamwater"
     }
   ]
   APP_ID: string = '';
@@ -85,6 +85,8 @@ export class AppComponent implements OnInit {
     }
   }
 
+  constructor(private fb: FacebookService){}
+
   ngOnInit() {
     this.loadWidget();
   }
@@ -92,20 +94,21 @@ export class AppComponent implements OnInit {
   onChange(event: any) {
     this.modelFaceTwit.facebook.fbLinkSelected = event.target.value;
     //this.initFbWIdget(this.modelFaceTwit.facebook.fbLinkSelected);
-    this.loadFb()
+    this.loadWidget()
   }
 
   loadWidget() {
-    var js, fjs = document.getElementsByTagName('script')[0];
-    if (document.getElementById("facebook-jssdk")) return;
-    js = document.createElement('script');
-    js.id = "facebook-jssdk";
-    js.src = "https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.0&appId=1783474715284560"
-    fjs.parentNode.insertBefore(js, fjs);
+    let initParams: InitParams = {
+      appId: '1783474715284560',
+      xfbml: true,
+      version: 'v2.8'
+    };
+ 
+    this.fb.init(initParams);
+   
   }
 
   loadFb() {
-    console.log("loading ...")
     const widget = document.getElementById("fbWidget");
     const parent = widget.parentNode;
     widget.parentNode.removeChild(widget);
@@ -120,11 +123,10 @@ export class AppComponent implements OnInit {
                    <a href="`+ this.modelFaceTwit.facebook.fbLinkSelected + `">American Water</a>
                </blockquote></div>`;
 
-    if(window.FB){
-      window.FB.XFBML.parse(this.parser);
-    }
+    
 
     this.loadWidget()
   }
+
 
 }
